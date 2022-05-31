@@ -3,7 +3,6 @@ package com.task.management;
 import com.task.management.core.Task;
 import com.task.management.db.TaskDAO;
 import com.task.management.health.TemplateHealthCheck;
-import com.task.management.resources.HelloWorldResource;
 import com.task.management.resources.TaskManagementResource;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -68,17 +67,12 @@ public class TaskManagementApplication extends Application<TaskManagementConfigu
         // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
         
-        final HelloWorldResource resource = new HelloWorldResource(
-                configuration.getTemplate(),
-                configuration.getDefaultName()
-        );
 
         final TaskDAO taskDAO = new TaskDAO(hibernateBundle.getSessionFactory());
 
         final TemplateHealthCheck healthCheck =
                 new TemplateHealthCheck(configuration.getTemplate());
         environment.healthChecks().register("template", healthCheck);
-        environment.jersey().register(resource);
         environment.jersey().register(new TaskManagementResource(taskDAO));
     }
 

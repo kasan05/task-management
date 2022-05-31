@@ -25,7 +25,16 @@ public class TaskDAO extends AbstractDAO<Task> {
         return list(namedTypedQuery("com.task.management.core.Task.findAll"));
     }
 
-    public void delete(String id) {
-       
+    public void delete(long id) {
+        Task task = getById(id);
+        if (task != null) currentSession().delete(task);
+    }
+
+    public Task getById(long id) {
+        return findById(id).orElse(null);
+    }
+
+    public Task updateTask(Task task) {
+        return persist(task);
     }
 }

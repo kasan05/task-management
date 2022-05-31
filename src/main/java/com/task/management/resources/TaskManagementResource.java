@@ -39,9 +39,16 @@ public class TaskManagementResource {
         return taskDAO.findAll();
     }
 
+    @Path("/{id}")
     @DELETE
     @UnitOfWork
-    public void deleteTask() {
+    public void deleteTask(@PathParam("id") int id) {
+        taskDAO.delete(id);
+    }
 
+    @PUT
+    @UnitOfWork
+    public Task updateTask(Task task) {
+        return taskDAO.updateTask(task);
     }
 }
